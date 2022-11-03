@@ -3,7 +3,7 @@
   "name": "WEBFLEET",
   "documentation": "https://github.com/tom-winkler/ha-webfleet-integration",
   "issue_tracker": "https://github.com/tom-winkler/ha-webfleet-integration/issues",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "codeowners": ["@tom-winkler"],
-  "requirements": ["webfleet==0.0.1"]
+  "requirements": ["wfconnect==0.0.1"]
 }
