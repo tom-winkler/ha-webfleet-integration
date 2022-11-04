@@ -1,14 +1,17 @@
 # WEBFLEET integration
+Import your vehicle from [WEBFLEET](https://live.webfleet.com/web/index.html):
 
-## How to install
+![screenshot of vehicle in WEBFLEET UI](images/webfleet-sample.png "WEBFLEET Vehicle")
 
-Copy the files to your `config` directy of homeassistant underneath `custom_components`.
+To homeassistant and create your custom automations and insights based on new device tracker entities:
 
-e.g. `config/custom_components/webfleet/__init__.py`
+![screenshot of ha showing vehicle details](images/example.png "Vehicle Entity")
 
-## How to start
+# Configuration
 
-Add a custom device tracker called `webfleet` to your configuration e.g.
+As there is no UI config flow yet you need to add the following lines to your configuration.
+Make sure to add your secrets and account credentials accordingly. 
+It is recommended to make use of an API key to configure scope and flood protection measures.
 
     device_tracker:
     - platform: webfleet
@@ -18,8 +21,16 @@ Add a custom device tracker called `webfleet` to your configuration e.g.
         password: !secret webfleet_pwd
         group: !secret webfleet_group
         api_key: !secret webfleet_apikey
-        new_device_defaults:
-        track_new_devices: true
+## Useful links
+
+- [WEBFLEET Developer Resources](https://www.webfleet.com/en_gb/webfleet/partners/integration/developer-resources/)
+
+
+## How to install without [HACS](https://hacs.xyz/)
+
+Copy the files to your `config` directy of homeassistant underneath `custom_components`.
+
+e.g. `config/custom_components/webfleet/__init__.py`
 
 ## Work in progress
 
