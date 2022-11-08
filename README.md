@@ -14,8 +14,8 @@ Make sure to add your secrets and account credentials accordingly.
 It is recommended to make use of an API key to configure scope and flood protection measures.
 
     device_tracker:
-    - platform: webfleet
-        url: !secret webfleet_url 
+      - platform: webfleet
+        url: !secret webfleet_url
         at: !secret webfleet_account
         username: !secret webfleet_username
         password: !secret webfleet_pwd
