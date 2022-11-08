@@ -21,6 +21,14 @@ It is recommended to make use of an API key to configure scope and flood protect
         password: !secret webfleet_pwd
         group: !secret webfleet_group
         api_key: !secret webfleet_apikey
+
+#### Minimum Example of your configuration.yaml
+    device_tracker:
+    - platform: webfleet
+      username: _your_username_
+      at: _your_webfleet_account_name_
+      password: _your_password_
+
 ## Useful links
 
 - [WEBFLEET Developer Resources](https://www.webfleet.com/en_gb/webfleet/partners/integration/developer-resources/)
