@@ -19,7 +19,7 @@ It is recommended to make use of an API key to configure scope and flood protect
         at: !secret webfleet_account
         username: !secret webfleet_username
         password: !secret webfleet_pwd
-        group: !secret webfleet_group
+        devices: !secret webfleet_group
         api_key: !secret webfleet_apikey
 
 #### Minimum Example of your configuration.yaml
