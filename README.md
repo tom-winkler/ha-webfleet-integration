@@ -24,10 +24,10 @@ It is recommended to make use of an API key to configure scope and flood protect
 
 #### Minimum Example of your configuration.yaml
     device_tracker:
-    - platform: webfleet
-      username: _your_username_
-      at: _your_webfleet_account_name_
-      password: _your_password_
+      - platform: webfleet
+        username: _your_username_
+        at: _your_webfleet_account_name_
+        password: _your_password_
 
 ## Useful links
 
