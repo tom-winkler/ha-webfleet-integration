@@ -1,4 +1,7 @@
 # WEBFLEET integration
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=tom-winkler&repository=ha-webfleet-integration&category=integration)
+
 Import your vehicle from [WEBFLEET](https://live.webfleet.com/web/index.html):
 
 ![screenshot of vehicle in WEBFLEET UI](images/webfleet-sample.png "WEBFLEET Vehicle")
