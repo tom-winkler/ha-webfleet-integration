@@ -59,6 +59,10 @@ ICON_BUS = "mdi:bus"
 ICON_TRUCK = "mdi:truck"
 
 
+async def async_setup_entry(hass, entry, async_add_devices):
+    _LOGGER.debug("async_setup_entry %s", entry)
+
+
 def setup_scanner(hass, config, see, discovery_info=None):
     """Set up WEBFLEET tracker"""
     _LOGGER.debug("Connecting to webfleet with config %s", config)
