@@ -1,5 +1,6 @@
 """Support for WEBFLEET platform."""
 import logging
+import typing
 
 from wfconnect.wfconnect import WfConnect
 from typing import Optional
@@ -15,8 +16,12 @@ from homeassistant.components.device_tracker.config_entry import TrackerEntity
 from homeassistant.components.device_tracker.const import (
     DOMAIN as DEVICE_TRACKER_DOMAIN,
 )
+from homeassistant.components.device_tracker.legacy import SERVICE_SEE, AsyncSeeCallback
+from homeassistant.core import HomeAssistant
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.event import track_utc_time_change
+from homeassistant.helpers.event import async_track_utc_time_change
+from homeassistant.helpers.typing import ConfigType
 from homeassistant.util import slugify
 
 
@@ -61,6 +66,34 @@ ICON_TRUCK = "mdi:truck"
 
 async def async_setup_entry(hass, entry, async_add_devices):
     _LOGGER.debug("async_setup_entry %s", entry)
+    config = entry.data
+
+    hass.data[WF_DOMAIN][entry.entry_id].setAuthentication(
+        config.get(CONF_AT),
+        config.get(CONF_USERNAME),
+        config.get(CONF_PASSWORD),
+        config.get(CONF_API_KEY),
+    )
+
+    scanner = WebfleetDeviceScanner(
+        hass,
+        hass.services.async_call(DEVICE_TRACKER_DOMAIN, SERVICE_SEE),
+        hass.data[WF_DOMAIN][entry.entry_id],
+        config.get(CONF_DEVICES),
+    )
+    devices = scanner.scan_devices
+    _LOGGER.debug(f"founf {devices} devices")
+    async_track_utc_time_change(hass, scanner.scan_devices, second=range(0, 60, 30))
+
+
+def async_setup_scanner(
+    hass: HomeAssistant,
+    config: ConfigType,
+    scanner: DeviceScanner,
+    async_see_device,
+    platform: str,
+):
+    _LOGGER.debug("Connecting to webfleet with config %s", config)
 
 
 def setup_scanner(hass, config, see, discovery_info=None):
@@ -76,39 +109,37 @@ def setup_scanner(hass, config, see, discovery_info=None):
 
 
 class WebfleetDeviceScanner(DeviceScanner):
-    def __init__(self, hass, config, see) -> None:
+    def __init__(self, hass, see, wfConnectApi, group) -> None:
         """Initialize WEBFLEET connection"""
         _LOGGER.debug("Scanner for WEBFLEET devices")
-        if self.parseConfigAndConnect(config):
-            _LOGGER.debug("Connection established")
-        else:
-            _LOGGER.debug("Cannot establish connection to WEBFLEET, missing config.")
         self.hass = hass
         self.vehicles = []
         self.vehicle_ids = []
         self.see = see
-        self._update_info()
+        self.api = wfConnectApi
+        self.group = group
 
-    def parseConfigAndConnect(self, config):
-        try:
-            self.url = config.get(CONF_URL)
-            self.username = config.get(CONF_USERNAME)
-            self.account = config.get(CONF_AT)
-            self.password = config.get(CONF_PASSWORD)
-            self.group = config.get(CONF_DEVICES)
-            self.apikey = config.get(CONF_API_KEY)
-            self.api = WfConnect(self.url)
-            self.api.setAuthentication(
-                self.account, self.username, self.password, self.apikey
-            )
-        except Exception:
-            _LOGGER.warning("Error parsing config", exc_info=True)
-            return False
-        return True
-
-    def scan_devices(self, now=None) -> None:
+    async def scan_devices(self, now=None) -> None:
         """Scan for new devices and return a list with found device IDs."""
-        self._update_info(now)
+        await self.hass.async_add_executor_job(self._update_info, now)
+        _LOGGER.debug("Reporting %s vehicle(s).", len(self.vehicles))
+        for vehicle in self.vehicles:
+            try:
+                location_name = vehicle.location_name or ""
+                data = {
+                    "dev_id": vehicle.name,
+                    "gps": (vehicle.latitude, vehicle.longitude),
+                    "location_name": location_name,
+                    "attributes": vehicle.extras,
+                    "gps_accuracy": 5,
+                    "host_name": vehicle.device_name,
+                }
+                await self.hass.services.async_call(
+                    DEVICE_TRACKER_DOMAIN, SERVICE_SEE, service_data=data
+                )
+                _LOGGER.debug(f"Send: {vehicle.name}, {vehicle.extras}")
+            except Exception:
+                _LOGGER.warning("Could not update vehicle", exc_info=True)
 
     def get_attached_devices(self):
         _LOGGER.debug("Send attached devices %s", self.vehicles)
@@ -147,22 +178,6 @@ class WebfleetDeviceScanner(DeviceScanner):
                 if vehicle.device_id in discovered_vehicle_ids
             ]
             self.vehicle_ids = [vehicle.device_id for vehicle in self.vehicles]
-
-            _LOGGER.debug("Reporting %s vehicle(s).", len(self.vehicles))
-            for vehicle in self.vehicles:
-                try:
-                    self.see(
-                        dev_id=vehicle.name,
-                        gps=(vehicle.latitude, vehicle.longitude),
-                        location_name=vehicle.location_name,
-                        attributes=vehicle.extras,
-                        gps_accuracy=5,
-                        host_name=vehicle.device_name,
-                        icon=vehicle.icon,
-                    )
-                    _LOGGER.debug(f"Send: {vehicle.name}, {vehicle.extras}")
-                except Exception:
-                    _LOGGER.warning("Could not update vehicle", exc_info=True)
 
         except Exception:
             _LOGGER.warning("Update not successful:", exc_info=True)
