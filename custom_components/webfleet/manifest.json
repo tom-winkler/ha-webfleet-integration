@@ -3,9 +3,9 @@
   "name": "WEBFLEET",
   "documentation": "https://github.com/tom-winkler/ha-webfleet-integration",
   "issue_tracker": "https://github.com/tom-winkler/ha-webfleet-integration/issues",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "codeowners": ["@tom-winkler"],
   "requirements": ["wfconnect==0.0.1"],
   "iot_class": "cloud_polling",
-  "config_flow": "True"
+  "config_flow": true
 }
