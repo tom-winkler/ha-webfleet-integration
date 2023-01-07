@@ -7,5 +7,5 @@
   "codeowners": ["@tom-winkler"],
   "requirements": ["wfconnect==0.0.1"],
   "iot_class": "cloud_polling",
-  "config_flow": "true"
+  "config_flow": "True"
 }
