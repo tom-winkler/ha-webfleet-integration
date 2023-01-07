@@ -19,8 +19,6 @@ from homeassistant.const import (
     CONF_DEVICES,
 )
 
-# TODO List the platforms that you want to support.
-# For your initial PR, limit it to 1 platform.
 PLATFORMS: list[Platform] = [Platform.DEVICE_TRACKER]
 
 
