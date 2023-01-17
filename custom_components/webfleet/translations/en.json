@@ -11,9 +11,17 @@
         "step": {
             "user": {
                 "data": {
-                    "host": "Host",
+                    "url": "WEBFLEET.connect URL",
                     "password": "Password",
-                    "username": "Username"
+                    "username": "Username",
+                    "api_key": "API Key",
+                    "at": "Account name",
+                    "devices": "Groupname to filter for e.g. 'My vehicle group'"
+                }
+            },
+            "group_selection": {
+                "data": {
+                    "groups": "Available groups"
                 }
             }
         }

@@ -31,27 +31,15 @@ class WebfleetConfigFlow(config_entries.ConfigFlow, domain=WF_DOMAIN):
             vol.Optional(
                 CONF_URL,
                 default="https://csv.webfleet.com/extern",
-                description="WEBFLEET.connect url to use",
             ): cv.string,
-            vol.Required(CONF_AT, description={"suggested_value": ""}): cv.string,
-            vol.Required(
-                CONF_USERNAME,
-                description={
-                    "label": "The username to be used in webfleet",
-                    "suggested_value": "",
-                },
-            ): cv.string,
+            vol.Required(CONF_AT): cv.string,
+            vol.Required(CONF_USERNAME): cv.string,
             vol.Required(
                 CONF_PASSWORD,
-                description={"label": "password"},
             ): cv.string,
-            vol.Optional(
-                CONF_API_KEY,
-                description={"suggested_value": "like 323232332"},
-            ): cv.string,
+            vol.Optional(CONF_API_KEY): cv.string,
             vol.Optional(
                 CONF_DEVICES,
-                description="Grooupnmae or objec name to import.",
             ): cv.string,
         }
     )
