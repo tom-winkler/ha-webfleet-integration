@@ -1,10 +1,10 @@
 {
   "domain": "webfleet",
   "name": "WEBFLEET",
-  "documentation": "https://github.com/tom-winkler/ha-webfleet-integration",
-  "issue_tracker": "https://github.com/tom-winkler/ha-webfleet-integration/issues",
-  "version": "0.1.1",
   "codeowners": ["@tom-winkler"],
+  "documentation": "https://github.com/tom-winkler/ha-webfleet-integration",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/tom-winkler/ha-webfleet-integration/issues",
   "requirements": ["wfconnect==0.0.1"],
-  "iot_class": "cloud_polling"
+  "version": "0.1.1"
 }
