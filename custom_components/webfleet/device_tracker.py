@@ -8,10 +8,10 @@ import voluptuous as vol
 from homeassistant.components.device_tracker import (
     PLATFORM_SCHEMA,
     DeviceScanner,
-    SOURCE_TYPE_GPS,
+    SourceType,
+    TrackerEntity,
 )
 
-from homeassistant.components.device_tracker.config_entry import TrackerEntity
 from homeassistant.components.device_tracker.const import (
     DOMAIN as DEVICE_TRACKER_DOMAIN,
 )
@@ -192,7 +192,7 @@ class WebfleetEntity(TrackerEntity):
 
     @property
     def source_type(self):
-        return SOURCE_TYPE_GPS
+        return SourceType.GPS
 
     @property
     def icon(self) -> Optional[str]:
